@@ -1,3 +1,4 @@
+# Question 1
 library(httr)
 
 # 1. Find OAuth settings for github:
@@ -19,11 +20,11 @@ github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
 # 4. Use API
 gtoken <- config(token = github_token)
 #req <- GET("https://api.github.com/rate_limit", gtoken)
-req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
+req <- GET("https://api.github.com/users/jtleek/repos?sort=created", gtoken)
+#req <- GET("https://api.github.com/users/jschaal/repos?sort=created", gtoken)
 stop_for_status(req)
-content(req)
+repList <- content(req)
+for (i in 1:length(repList)) {
+        print(paste(as.character(i),repList[[i]]$name,as.character(repList[[i]]$created_at)))
+}
 
-# OR:
-req <- with_config(gtoken, GET("https://api.github.com/rate_limit"))
-stop_for_status(req)
-content(req)
